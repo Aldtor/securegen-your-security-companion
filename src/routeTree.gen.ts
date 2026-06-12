@@ -16,6 +16,7 @@ import { Route as PasswordStrengthRouteImport } from './routes/password-strength
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as PassphraseGeneratorRouteImport } from './routes/passphrase-generator'
 import { Route as HashGeneratorRouteImport } from './routes/hash-generator'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -57,6 +58,11 @@ const HashGeneratorRoute = HashGeneratorRouteImport.update({
   path: '/hash-generator',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRouteWithChildren
+  '/contact': typeof ContactRoute
   '/hash-generator': typeof HashGeneratorRoute
   '/passphrase-generator': typeof PassphraseGeneratorRoute
   '/password-generator': typeof PasswordGeneratorRoute
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/hash-generator': typeof HashGeneratorRoute
   '/passphrase-generator': typeof PassphraseGeneratorRoute
   '/password-generator': typeof PasswordGeneratorRoute
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRouteWithChildren
+  '/contact': typeof ContactRoute
   '/hash-generator': typeof HashGeneratorRoute
   '/passphrase-generator': typeof PassphraseGeneratorRoute
   '/password-generator': typeof PasswordGeneratorRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/blog'
+    | '/contact'
     | '/hash-generator'
     | '/passphrase-generator'
     | '/password-generator'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/contact'
     | '/hash-generator'
     | '/passphrase-generator'
     | '/password-generator'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/blog'
+    | '/contact'
     | '/hash-generator'
     | '/passphrase-generator'
     | '/password-generator'
@@ -173,6 +185,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BlogRoute: typeof BlogRouteWithChildren
+  ContactRoute: typeof ContactRoute
   HashGeneratorRoute: typeof HashGeneratorRoute
   PassphraseGeneratorRoute: typeof PassphraseGeneratorRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
@@ -233,6 +246,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HashGeneratorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog': {
       id: '/blog'
       path: '/blog'
@@ -287,6 +307,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BlogRoute: BlogRouteWithChildren,
+  ContactRoute: ContactRoute,
   HashGeneratorRoute: HashGeneratorRoute,
   PassphraseGeneratorRoute: PassphraseGeneratorRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
