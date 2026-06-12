@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UuidGeneratorRouteImport } from './routes/uuid-generator'
 import { Route as UsernameGeneratorRouteImport } from './routes/username-generator'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as QrGeneratorRouteImport } from './routes/qr-generator'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PasswordStrengthRouteImport } from './routes/password-strength'
@@ -38,6 +39,11 @@ const UsernameGeneratorRoute = UsernameGeneratorRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QrGeneratorRoute = QrGeneratorRouteImport.update({
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/password-strength': typeof PasswordStrengthRoute
   '/privacy': typeof PrivacyRoute
   '/qr-generator': typeof QrGeneratorRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/username-generator': typeof UsernameGeneratorRoute
   '/uuid-generator': typeof UuidGeneratorRoute
@@ -128,6 +135,7 @@ export interface FileRoutesByTo {
   '/password-strength': typeof PasswordStrengthRoute
   '/privacy': typeof PrivacyRoute
   '/qr-generator': typeof QrGeneratorRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/username-generator': typeof UsernameGeneratorRoute
   '/uuid-generator': typeof UuidGeneratorRoute
@@ -146,6 +154,7 @@ export interface FileRoutesById {
   '/password-strength': typeof PasswordStrengthRoute
   '/privacy': typeof PrivacyRoute
   '/qr-generator': typeof QrGeneratorRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/username-generator': typeof UsernameGeneratorRoute
   '/uuid-generator': typeof UuidGeneratorRoute
@@ -165,6 +174,7 @@ export interface FileRouteTypes {
     | '/password-strength'
     | '/privacy'
     | '/qr-generator'
+    | '/sitemap.xml'
     | '/terms'
     | '/username-generator'
     | '/uuid-generator'
@@ -181,6 +191,7 @@ export interface FileRouteTypes {
     | '/password-strength'
     | '/privacy'
     | '/qr-generator'
+    | '/sitemap.xml'
     | '/terms'
     | '/username-generator'
     | '/uuid-generator'
@@ -198,6 +209,7 @@ export interface FileRouteTypes {
     | '/password-strength'
     | '/privacy'
     | '/qr-generator'
+    | '/sitemap.xml'
     | '/terms'
     | '/username-generator'
     | '/uuid-generator'
@@ -216,6 +228,7 @@ export interface RootRouteChildren {
   PasswordStrengthRoute: typeof PasswordStrengthRoute
   PrivacyRoute: typeof PrivacyRoute
   QrGeneratorRoute: typeof QrGeneratorRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   UsernameGeneratorRoute: typeof UsernameGeneratorRoute
   UuidGeneratorRoute: typeof UuidGeneratorRoute
@@ -242,6 +255,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/qr-generator': {
@@ -354,6 +374,7 @@ const rootRouteChildren: RootRouteChildren = {
   PasswordStrengthRoute: PasswordStrengthRoute,
   PrivacyRoute: PrivacyRoute,
   QrGeneratorRoute: QrGeneratorRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   UsernameGeneratorRoute: UsernameGeneratorRoute,
   UuidGeneratorRoute: UuidGeneratorRoute,
