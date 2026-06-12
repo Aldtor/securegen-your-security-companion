@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UuidGeneratorRouteImport } from './routes/uuid-generator'
 import { Route as UsernameGeneratorRouteImport } from './routes/username-generator'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as QrGeneratorRouteImport } from './routes/qr-generator'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PasswordStrengthRouteImport } from './routes/password-strength'
@@ -32,6 +33,11 @@ const UuidGeneratorRoute = UuidGeneratorRouteImport.update({
 const UsernameGeneratorRoute = UsernameGeneratorRouteImport.update({
   id: '/username-generator',
   path: '/username-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QrGeneratorRoute = QrGeneratorRouteImport.update({
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/password-strength': typeof PasswordStrengthRoute
   '/privacy': typeof PrivacyRoute
   '/qr-generator': typeof QrGeneratorRoute
+  '/terms': typeof TermsRoute
   '/username-generator': typeof UsernameGeneratorRoute
   '/uuid-generator': typeof UuidGeneratorRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByTo {
   '/password-strength': typeof PasswordStrengthRoute
   '/privacy': typeof PrivacyRoute
   '/qr-generator': typeof QrGeneratorRoute
+  '/terms': typeof TermsRoute
   '/username-generator': typeof UsernameGeneratorRoute
   '/uuid-generator': typeof UuidGeneratorRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -138,6 +146,7 @@ export interface FileRoutesById {
   '/password-strength': typeof PasswordStrengthRoute
   '/privacy': typeof PrivacyRoute
   '/qr-generator': typeof QrGeneratorRoute
+  '/terms': typeof TermsRoute
   '/username-generator': typeof UsernameGeneratorRoute
   '/uuid-generator': typeof UuidGeneratorRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -156,6 +165,7 @@ export interface FileRouteTypes {
     | '/password-strength'
     | '/privacy'
     | '/qr-generator'
+    | '/terms'
     | '/username-generator'
     | '/uuid-generator'
     | '/blog/$slug'
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/password-strength'
     | '/privacy'
     | '/qr-generator'
+    | '/terms'
     | '/username-generator'
     | '/uuid-generator'
     | '/blog/$slug'
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/password-strength'
     | '/privacy'
     | '/qr-generator'
+    | '/terms'
     | '/username-generator'
     | '/uuid-generator'
     | '/blog/$slug'
@@ -204,6 +216,7 @@ export interface RootRouteChildren {
   PasswordStrengthRoute: typeof PasswordStrengthRoute
   PrivacyRoute: typeof PrivacyRoute
   QrGeneratorRoute: typeof QrGeneratorRoute
+  TermsRoute: typeof TermsRoute
   UsernameGeneratorRoute: typeof UsernameGeneratorRoute
   UuidGeneratorRoute: typeof UuidGeneratorRoute
 }
@@ -222,6 +235,13 @@ declare module '@tanstack/react-router' {
       path: '/username-generator'
       fullPath: '/username-generator'
       preLoaderRoute: typeof UsernameGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/qr-generator': {
@@ -334,6 +354,7 @@ const rootRouteChildren: RootRouteChildren = {
   PasswordStrengthRoute: PasswordStrengthRoute,
   PrivacyRoute: PrivacyRoute,
   QrGeneratorRoute: QrGeneratorRoute,
+  TermsRoute: TermsRoute,
   UsernameGeneratorRoute: UsernameGeneratorRoute,
   UuidGeneratorRoute: UuidGeneratorRoute,
 }
