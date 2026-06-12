@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UuidGeneratorRouteImport } from './routes/uuid-generator'
 import { Route as UsernameGeneratorRouteImport } from './routes/username-generator'
 import { Route as QrGeneratorRouteImport } from './routes/qr-generator'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PasswordStrengthRouteImport } from './routes/password-strength'
 import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
 import { Route as PassphraseGeneratorRouteImport } from './routes/passphrase-generator'
@@ -36,6 +37,11 @@ const UsernameGeneratorRoute = UsernameGeneratorRouteImport.update({
 const QrGeneratorRoute = QrGeneratorRouteImport.update({
   id: '/qr-generator',
   path: '/qr-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PasswordStrengthRoute = PasswordStrengthRouteImport.update({
@@ -98,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/passphrase-generator': typeof PassphraseGeneratorRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
+  '/privacy': typeof PrivacyRoute
   '/qr-generator': typeof QrGeneratorRoute
   '/username-generator': typeof UsernameGeneratorRoute
   '/uuid-generator': typeof UuidGeneratorRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/passphrase-generator': typeof PassphraseGeneratorRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
+  '/privacy': typeof PrivacyRoute
   '/qr-generator': typeof QrGeneratorRoute
   '/username-generator': typeof UsernameGeneratorRoute
   '/uuid-generator': typeof UuidGeneratorRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/passphrase-generator': typeof PassphraseGeneratorRoute
   '/password-generator': typeof PasswordGeneratorRoute
   '/password-strength': typeof PasswordStrengthRoute
+  '/privacy': typeof PrivacyRoute
   '/qr-generator': typeof QrGeneratorRoute
   '/username-generator': typeof UsernameGeneratorRoute
   '/uuid-generator': typeof UuidGeneratorRoute
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/passphrase-generator'
     | '/password-generator'
     | '/password-strength'
+    | '/privacy'
     | '/qr-generator'
     | '/username-generator'
     | '/uuid-generator'
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/passphrase-generator'
     | '/password-generator'
     | '/password-strength'
+    | '/privacy'
     | '/qr-generator'
     | '/username-generator'
     | '/uuid-generator'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/passphrase-generator'
     | '/password-generator'
     | '/password-strength'
+    | '/privacy'
     | '/qr-generator'
     | '/username-generator'
     | '/uuid-generator'
@@ -190,6 +202,7 @@ export interface RootRouteChildren {
   PassphraseGeneratorRoute: typeof PassphraseGeneratorRoute
   PasswordGeneratorRoute: typeof PasswordGeneratorRoute
   PasswordStrengthRoute: typeof PasswordStrengthRoute
+  PrivacyRoute: typeof PrivacyRoute
   QrGeneratorRoute: typeof QrGeneratorRoute
   UsernameGeneratorRoute: typeof UsernameGeneratorRoute
   UuidGeneratorRoute: typeof UuidGeneratorRoute
@@ -216,6 +229,13 @@ declare module '@tanstack/react-router' {
       path: '/qr-generator'
       fullPath: '/qr-generator'
       preLoaderRoute: typeof QrGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/password-strength': {
@@ -312,6 +332,7 @@ const rootRouteChildren: RootRouteChildren = {
   PassphraseGeneratorRoute: PassphraseGeneratorRoute,
   PasswordGeneratorRoute: PasswordGeneratorRoute,
   PasswordStrengthRoute: PasswordStrengthRoute,
+  PrivacyRoute: PrivacyRoute,
   QrGeneratorRoute: QrGeneratorRoute,
   UsernameGeneratorRoute: UsernameGeneratorRoute,
   UuidGeneratorRoute: UuidGeneratorRoute,
