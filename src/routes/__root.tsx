@@ -11,6 +11,10 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { ThemeProvider } from "../components/layout/theme-provider";
+import { Header } from "../components/layout/header";
+import { Footer } from "../components/layout/footer";
+import { Toaster } from "../components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -77,14 +81,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Free Password Generator & Security Tools | SecureGen" },
+      { name: "description", content: "Generate secure passwords, check password strength, create usernames, generate UUIDs, QR codes and hashes with SecureGen." },
+      { name: "author", content: "SecureGen" },
+      { property: "og:title", content: "Free Password Generator & Security Tools | SecureGen" },
+      { property: "og:description", content: "Generate secure passwords, check password strength, create usernames, generate UUIDs, QR codes and hashes with SecureGen." },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "SecureGen" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "SecureGen — Free Security Tools" },
+      { name: "twitter:description", content: "Generate secure passwords, UUIDs, QR codes, hashes and more. Browser-only, zero tracking." },
     ],
     links: [
       {
@@ -92,6 +98,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
     ],
+    scripts: [{
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: "SecureGen",
+        description: "Free browser-based security and privacy tools",
+        url: "/",
+      }),
+    }],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -118,8 +134,16 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <ThemeProvider>
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <Footer />
+        </div>
+        <Toaster />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

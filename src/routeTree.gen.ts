@@ -9,38 +9,324 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UuidGeneratorRouteImport } from './routes/uuid-generator'
+import { Route as UsernameGeneratorRouteImport } from './routes/username-generator'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as QrGeneratorRouteImport } from './routes/qr-generator'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PasswordStrengthRouteImport } from './routes/password-strength'
+import { Route as PasswordGeneratorRouteImport } from './routes/password-generator'
+import { Route as PassphraseGeneratorRouteImport } from './routes/passphrase-generator'
+import { Route as HashGeneratorRouteImport } from './routes/hash-generator'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
+const UuidGeneratorRoute = UuidGeneratorRouteImport.update({
+  id: '/uuid-generator',
+  path: '/uuid-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UsernameGeneratorRoute = UsernameGeneratorRouteImport.update({
+  id: '/username-generator',
+  path: '/username-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QrGeneratorRoute = QrGeneratorRouteImport.update({
+  id: '/qr-generator',
+  path: '/qr-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PasswordStrengthRoute = PasswordStrengthRouteImport.update({
+  id: '/password-strength',
+  path: '/password-strength',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PasswordGeneratorRoute = PasswordGeneratorRouteImport.update({
+  id: '/password-generator',
+  path: '/password-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PassphraseGeneratorRoute = PassphraseGeneratorRouteImport.update({
+  id: '/passphrase-generator',
+  path: '/passphrase-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HashGeneratorRoute = HashGeneratorRouteImport.update({
+  id: '/hash-generator',
+  path: '/hash-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/contact': typeof ContactRoute
+  '/hash-generator': typeof HashGeneratorRoute
+  '/passphrase-generator': typeof PassphraseGeneratorRoute
+  '/password-generator': typeof PasswordGeneratorRoute
+  '/password-strength': typeof PasswordStrengthRoute
+  '/privacy': typeof PrivacyRoute
+  '/qr-generator': typeof QrGeneratorRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
+  '/username-generator': typeof UsernameGeneratorRoute
+  '/uuid-generator': typeof UuidGeneratorRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/blog/': typeof BlogIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/hash-generator': typeof HashGeneratorRoute
+  '/passphrase-generator': typeof PassphraseGeneratorRoute
+  '/password-generator': typeof PasswordGeneratorRoute
+  '/password-strength': typeof PasswordStrengthRoute
+  '/privacy': typeof PrivacyRoute
+  '/qr-generator': typeof QrGeneratorRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
+  '/username-generator': typeof UsernameGeneratorRoute
+  '/uuid-generator': typeof UuidGeneratorRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/blog': typeof BlogIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/contact': typeof ContactRoute
+  '/hash-generator': typeof HashGeneratorRoute
+  '/passphrase-generator': typeof PassphraseGeneratorRoute
+  '/password-generator': typeof PasswordGeneratorRoute
+  '/password-strength': typeof PasswordStrengthRoute
+  '/privacy': typeof PrivacyRoute
+  '/qr-generator': typeof QrGeneratorRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
+  '/username-generator': typeof UsernameGeneratorRoute
+  '/uuid-generator': typeof UuidGeneratorRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/blog/': typeof BlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/contact'
+    | '/hash-generator'
+    | '/passphrase-generator'
+    | '/password-generator'
+    | '/password-strength'
+    | '/privacy'
+    | '/qr-generator'
+    | '/sitemap.xml'
+    | '/terms'
+    | '/username-generator'
+    | '/uuid-generator'
+    | '/blog/$slug'
+    | '/blog/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/hash-generator'
+    | '/passphrase-generator'
+    | '/password-generator'
+    | '/password-strength'
+    | '/privacy'
+    | '/qr-generator'
+    | '/sitemap.xml'
+    | '/terms'
+    | '/username-generator'
+    | '/uuid-generator'
+    | '/blog/$slug'
+    | '/blog'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/contact'
+    | '/hash-generator'
+    | '/passphrase-generator'
+    | '/password-generator'
+    | '/password-strength'
+    | '/privacy'
+    | '/qr-generator'
+    | '/sitemap.xml'
+    | '/terms'
+    | '/username-generator'
+    | '/uuid-generator'
+    | '/blog/$slug'
+    | '/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  BlogRoute: typeof BlogRouteWithChildren
+  ContactRoute: typeof ContactRoute
+  HashGeneratorRoute: typeof HashGeneratorRoute
+  PassphraseGeneratorRoute: typeof PassphraseGeneratorRoute
+  PasswordGeneratorRoute: typeof PasswordGeneratorRoute
+  PasswordStrengthRoute: typeof PasswordStrengthRoute
+  PrivacyRoute: typeof PrivacyRoute
+  QrGeneratorRoute: typeof QrGeneratorRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TermsRoute: typeof TermsRoute
+  UsernameGeneratorRoute: typeof UsernameGeneratorRoute
+  UuidGeneratorRoute: typeof UuidGeneratorRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/uuid-generator': {
+      id: '/uuid-generator'
+      path: '/uuid-generator'
+      fullPath: '/uuid-generator'
+      preLoaderRoute: typeof UuidGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/username-generator': {
+      id: '/username-generator'
+      path: '/username-generator'
+      fullPath: '/username-generator'
+      preLoaderRoute: typeof UsernameGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/qr-generator': {
+      id: '/qr-generator'
+      path: '/qr-generator'
+      fullPath: '/qr-generator'
+      preLoaderRoute: typeof QrGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/password-strength': {
+      id: '/password-strength'
+      path: '/password-strength'
+      fullPath: '/password-strength'
+      preLoaderRoute: typeof PasswordStrengthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/password-generator': {
+      id: '/password-generator'
+      path: '/password-generator'
+      fullPath: '/password-generator'
+      preLoaderRoute: typeof PasswordGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/passphrase-generator': {
+      id: '/passphrase-generator'
+      path: '/passphrase-generator'
+      fullPath: '/passphrase-generator'
+      preLoaderRoute: typeof PassphraseGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hash-generator': {
+      id: '/hash-generator'
+      path: '/hash-generator'
+      fullPath: '/hash-generator'
+      preLoaderRoute: typeof HashGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +334,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
   }
 }
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  BlogRoute: BlogRouteWithChildren,
+  ContactRoute: ContactRoute,
+  HashGeneratorRoute: HashGeneratorRoute,
+  PassphraseGeneratorRoute: PassphraseGeneratorRoute,
+  PasswordGeneratorRoute: PasswordGeneratorRoute,
+  PasswordStrengthRoute: PasswordStrengthRoute,
+  PrivacyRoute: PrivacyRoute,
+  QrGeneratorRoute: QrGeneratorRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TermsRoute: TermsRoute,
+  UsernameGeneratorRoute: UsernameGeneratorRoute,
+  UuidGeneratorRoute: UuidGeneratorRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
