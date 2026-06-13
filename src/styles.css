@@ -229,3 +229,8 @@
 @utility animate-float { animation: float 6s ease-in-out infinite; }
 @utility animate-fade-up { animation: fade-up 0.6s ease-out both; }
 @utility animate-glow { animation: glow-pulse 3s ease-in-out infinite; }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333%); }
+}
