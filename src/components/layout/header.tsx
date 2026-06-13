@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Shield, Moon, Sun, Menu, X } from "lucide-react";
+import { Moon, Sun, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "./theme-provider";
 import { Button } from "@/components/ui/button";
@@ -22,11 +22,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full glass border-b border-border/40">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 max-w-7xl">
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="relative">
-            <Shield className="h-7 w-7 text-primary transition-transform group-hover:scale-110" />
-            <div className="absolute inset-0 blur-lg bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
-          <span className="text-xl font-bold gradient-text">SecureGen</span>
+          <span className="font-display text-2xl tracking-tight">SecureGen<span className="text-accent">.</span></span>
         </Link>
         <nav className="hidden md:flex items-center gap-1">
           <Link to="/" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Home</Link>
@@ -51,7 +47,7 @@ export function Header() {
             {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
           <Link to="/password-generator" className="hidden md:inline-flex">
-            <Button className="bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:opacity-90 shadow-[var(--shadow-elegant)]">Try it free</Button>
+            <Button className="rounded-none h-9 px-4 text-sm">Generate →</Button>
           </Link>
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}

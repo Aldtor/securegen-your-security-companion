@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Shield, KeyRound, Gauge, AtSign, Type, Hash, QrCode, Fingerprint, Sparkles, Lock, Zap, Eye, ArrowRight, Check, Star } from "lucide-react";
+import { KeyRound, Gauge, AtSign, Type, Hash, QrCode, Fingerprint, ArrowUpRight, RefreshCw, Copy } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { generatePassword, calcEntropy, strengthLabel, crackTime } from "@/lib/generators";
 import { toast } from "sonner";
@@ -23,33 +22,33 @@ export const Route = createFileRoute("/")({
 });
 
 const TOOLS = [
-  { to: "/password-generator", icon: KeyRound, name: "Password Generator", desc: "Cryptographically strong passwords in one click." },
-  { to: "/password-strength", icon: Gauge, name: "Strength Checker", desc: "Real-time entropy and crack-time analysis." },
-  { to: "/username-generator", icon: AtSign, name: "Username Generator", desc: "Unique handles for social, gaming, and pro use." },
-  { to: "/passphrase-generator", icon: Type, name: "Passphrase Generator", desc: "XKCD-style passphrases that you can remember." },
-  { to: "/uuid-generator", icon: Fingerprint, name: "UUID Generator", desc: "RFC 4122 v4 identifiers, single or bulk." },
-  { to: "/qr-generator", icon: QrCode, name: "QR Code Generator", desc: "Text, URL, WiFi, email, SMS. PNG & SVG export." },
-  { to: "/hash-generator", icon: Hash, name: "Hash Generator", desc: "MD5, SHA-1, SHA-256, SHA-512 hashing." },
+  { to: "/password-generator", icon: KeyRound, name: "Password", desc: "Cryptographically strong, length-tunable strings." },
+  { to: "/password-strength", icon: Gauge, name: "Strength", desc: "Entropy in bits and a realistic crack-time estimate." },
+  { to: "/passphrase-generator", icon: Type, name: "Passphrase", desc: "Diceware-style word lists you can actually type." },
+  { to: "/username-generator", icon: AtSign, name: "Username", desc: "Available-looking handles, no dictionary slop." },
+  { to: "/uuid-generator", icon: Fingerprint, name: "UUID v4", desc: "RFC 4122 identifiers, single or batched." },
+  { to: "/qr-generator", icon: QrCode, name: "QR Code", desc: "Text, URL, Wi-Fi, vCard. SVG and PNG export." },
+  { to: "/hash-generator", icon: Hash, name: "Hash", desc: "MD5, SHA-1, SHA-256, SHA-512." },
 ];
 
 const FAQS = [
-  { q: "Are these tools really free?", a: "Yes. Every tool on SecureGen is completely free with no limits, accounts, or paywalls." },
-  { q: "Do you store my passwords?", a: "Never. All generation, hashing, and analysis runs entirely in your browser. Nothing is sent to a server." },
-  { q: "How random are the passwords?", a: "We use the Web Crypto API's cryptographically secure random source — the same standard used by banks and security software." },
-  { q: "Can I use SecureGen for business?", a: "Absolutely. Our tools are suitable for personal, professional, and enterprise use." },
-  { q: "Why entropy instead of complexity rules?", a: "Entropy measures the actual mathematical strength of a password. Arbitrary rules like 'one special character' provide a false sense of security." },
+  { q: "Where does my data go?", a: "Nowhere. Every tool runs in your browser. There is no API call, no server log, no telemetry on inputs. You can verify that in your network tab." },
+  { q: "What's the random source?", a: "window.crypto.getRandomValues — the platform CSPRNG. The same source modern key generation, TLS, and authenticators rely on." },
+  { q: "Why entropy and not 'must contain a symbol'?", a: "Symbol rules are theatre. A 14-character random lowercase string beats Password1! on entropy. We show bits and a crack-time estimate so you can judge the actual cost to brute force." },
+  { q: "Can I use these at work?", a: "Yes. There's no licence, no account, no rate limit. Bookmark a tool, generate, paste into your vault." },
+  { q: "Open source?", a: "The crypto is the browser's. The UI is small and inspectable. We don't ship analytics on tool inputs." },
 ];
 
 function Index() {
   return (
     <>
       <Hero />
-      <Stats />
+      <Marquee />
       <ToolsGrid />
-      <Features />
-      <Testimonials />
+      <Manifesto />
+      <Notes />
       <FAQ />
-      <CTA />
+      <Colophon />
     </>
   );
 }
@@ -57,63 +56,74 @@ function Index() {
 function Hero() {
   const [pw, setPw] = useState("");
   useEffect(() => {
-    setPw(generatePassword({ length: 20, upper: true, lower: true, numbers: true, symbols: true, excludeSimilar: false, excludeAmbiguous: false }));
+    setPw(generatePassword({ length: 24, upper: true, lower: true, numbers: true, symbols: true, excludeSimilar: false, excludeAmbiguous: false }));
   }, []);
   const entropy = useMemo(() => calcEntropy(pw), [pw]);
   const strength = strengthLabel(entropy);
-  const regen = () => setPw(generatePassword({ length: 20, upper: true, lower: true, numbers: true, symbols: true, excludeSimilar: false, excludeAmbiguous: false }));
-  const copy = () => { navigator.clipboard.writeText(pw); toast.success("Password copied"); };
+  const regen = () => setPw(generatePassword({ length: 24, upper: true, lower: true, numbers: true, symbols: true, excludeSimilar: false, excludeAmbiguous: false }));
+  const copy = () => { navigator.clipboard.writeText(pw); toast.success("Copied"); };
   return (
-    <section className="relative overflow-hidden mesh-bg">
-      <div className="absolute inset-0 grid-bg pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
-      <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-primary/20 blur-3xl animate-float" />
-      <div className="absolute bottom-0 -right-32 w-96 h-96 rounded-full bg-secondary/20 blur-3xl animate-float" style={{ animationDelay: "2s" }} />
-      <div className="container mx-auto px-4 pt-20 pb-24 max-w-7xl relative">
-        <div className="text-center max-w-4xl mx-auto animate-fade-up">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-border/60 text-sm text-muted-foreground mb-6 shadow-[var(--shadow-elegant)]">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-75 animate-ping" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-            </span>
-            <Sparkles className="h-4 w-4 text-accent" />
-            <span>Trusted by 100,000+ users worldwide</span>
-          </div>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] leading-[1.02] mb-6">
-            Generate. <span className="gradient-text">Secure.</span><br className="hidden md:block" /> Protect.
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
-            A premium suite of security and privacy tools — passwords, passphrases, UUIDs, QR codes, hashes and more. 100% browser-based. Zero tracking.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
-            <Link to="/password-generator">
-              <Button size="lg" className="bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:opacity-90 shadow-[var(--shadow-elegant)] h-12 px-8 text-base">
-                Generate Password <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-            <Link to="/password-generator">
-              <Button size="lg" variant="outline" className="h-12 px-8 text-base glass">Explore Tools</Button>
-            </Link>
-          </div>
+    <section className="relative border-b border-border">
+      <div className="absolute inset-0 grid-bg pointer-events-none opacity-70" />
+      <div className="container mx-auto px-6 pt-20 pb-24 max-w-7xl relative">
+        <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground mb-16">
+          <span>Vol. 01 — Browser-only security</span>
+          <span className="hidden md:inline">Est. 2026 · No accounts · No telemetry</span>
+          <span>{new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit" })}</span>
         </div>
-        <div className="max-w-3xl mx-auto animate-fade-up" style={{ animationDelay: "0.2s" }}>
-          <div className="glass rounded-2xl p-6 md:p-8 shadow-[var(--shadow-glow)] border border-border/60">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Lock className="h-4 w-4 text-accent" />
-                <span>Live preview</span>
+        <div className="grid lg:grid-cols-12 gap-10 items-end">
+          <div className="lg:col-span-7">
+            <h1 className="font-display text-[3.4rem] sm:text-[5rem] lg:text-[7rem] leading-[0.92] tracking-[-0.02em]">
+              Secrets,<br />
+              <span className="italic">generated</span> in<br />
+              your browser.
+            </h1>
+            <p className="mt-8 max-w-md text-base leading-relaxed text-muted-foreground">
+              SecureGen is a small set of tools for the boring, important parts of being online: making a password you can't remember, a passphrase you can, an identifier that won't collide. Nothing leaves the tab.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 items-center text-sm">
+              <Link to="/password-generator" className="inline-flex items-center gap-2 group">
+                <span className="border-b border-foreground pb-0.5">Open the password tool</span>
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+              <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">Read the approach →</Link>
+            </div>
+          </div>
+          <div className="lg:col-span-5">
+            <figure className="border border-border bg-card">
+              <figcaption className="flex items-center justify-between px-4 py-2.5 border-b border-border text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+                <span>Fig. 1 — live sample</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent animate-glow" />
+                  csprng
+                </span>
+              </figcaption>
+              <div className="p-5">
+                <div className="font-mono text-[15px] md:text-base leading-relaxed break-all text-foreground select-all">{pw}</div>
               </div>
-              <span className={`text-xs px-2 py-1 rounded-full text-white ${strength.color}`}>{strength.label}</span>
-            </div>
-            <div className="font-mono text-lg md:text-2xl break-all p-4 rounded-xl bg-muted/50 border border-border mb-4 select-all">{pw}</div>
-            <div className="flex flex-wrap gap-2 mb-4">
-              <div className="text-xs px-3 py-1.5 rounded-lg bg-muted/50 border border-border"><span className="text-muted-foreground">Entropy:</span> <span className="font-semibold">{entropy.toFixed(1)} bits</span></div>
-              <div className="text-xs px-3 py-1.5 rounded-lg bg-muted/50 border border-border"><span className="text-muted-foreground">Crack time:</span> <span className="font-semibold">{crackTime(entropy)}</span></div>
-            </div>
-            <div className="flex gap-2">
-              <Button onClick={copy} className="flex-1">Copy</Button>
-              <Button onClick={regen} variant="outline" className="flex-1">Regenerate</Button>
-            </div>
+              <div className="grid grid-cols-3 border-t border-border text-[11px] font-mono uppercase tracking-[0.14em]">
+                <div className="px-4 py-3 border-r border-border">
+                  <div className="text-muted-foreground">Entropy</div>
+                  <div className="mt-1 text-foreground normal-case tracking-normal text-sm">{entropy.toFixed(1)} bits</div>
+                </div>
+                <div className="px-4 py-3 border-r border-border">
+                  <div className="text-muted-foreground">Strength</div>
+                  <div className="mt-1 text-foreground normal-case tracking-normal text-sm">{strength.label}</div>
+                </div>
+                <div className="px-4 py-3">
+                  <div className="text-muted-foreground">Crack</div>
+                  <div className="mt-1 text-foreground normal-case tracking-normal text-sm">{crackTime(entropy)}</div>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 border-t border-border">
+                <button onClick={copy} className="px-4 py-3 text-sm font-medium hover:bg-foreground hover:text-background transition-colors inline-flex items-center justify-center gap-2 border-r border-border">
+                  <Copy className="h-3.5 w-3.5" /> Copy
+                </button>
+                <button onClick={regen} className="px-4 py-3 text-sm font-medium hover:bg-foreground hover:text-background transition-colors inline-flex items-center justify-center gap-2">
+                  <RefreshCw className="h-3.5 w-3.5" /> Regenerate
+                </button>
+              </div>
+            </figure>
           </div>
         </div>
       </div>
@@ -121,21 +131,15 @@ function Hero() {
   );
 }
 
-function Stats() {
-  const stats = [
-    { v: "100K+", l: "Passwords generated" },
-    { v: "0", l: "Data ever stored" },
-    { v: "256-bit", l: "Cryptographic strength" },
-    { v: "100%", l: "Free, forever" },
-  ];
+function Marquee() {
+  const words = ["GENERATE", "·", "SECURE", "·", "PROTECT", "·", "NO TRACKING", "·", "NO ACCOUNT", "·", "WORKS OFFLINE", "·"];
   return (
-    <section className="container mx-auto px-4 py-16 max-w-7xl">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {stats.map(s => (
-          <div key={s.l} className="text-center glass rounded-2xl p-6 border border-border/60">
-            <div className="text-3xl md:text-4xl font-bold gradient-text mb-1">{s.v}</div>
-            <div className="text-sm text-muted-foreground">{s.l}</div>
-          </div>
+    <section className="border-b border-border overflow-hidden">
+      <div className="py-5 flex gap-10 whitespace-nowrap font-display text-3xl md:text-5xl italic text-foreground/80 [animation:marquee_40s_linear_infinite]">
+        {[...Array(3)].map((_, k) => (
+          <span key={k} className="flex gap-10 shrink-0">
+            {words.map((w, i) => <span key={i}>{w}</span>)}
+          </span>
         ))}
       </div>
     </section>
@@ -144,81 +148,72 @@ function Stats() {
 
 function ToolsGrid() {
   return (
-    <section className="container mx-auto px-4 py-20 max-w-7xl">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4">Every tool you need</h2>
-        <p className="text-muted-foreground text-lg max-w-2xl mx-auto">A complete suite of security and privacy utilities, free and browser-based.</p>
-      </div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {TOOLS.map(t => {
-          const Icon = t.icon;
-          return (
-            <Link key={t.to} to={t.to} className="group">
-              <Card className="p-6 h-full glass border-border/60 hover:border-primary/60 transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-elegant)]">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary text-primary-foreground flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Icon className="h-6 w-6" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{t.name}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{t.desc}</p>
-                <div className="flex items-center text-sm font-medium text-primary">
-                  Open tool <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Card>
-            </Link>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function Features() {
-  const items = [
-    { icon: Shield, t: "Privacy first", d: "Everything runs locally. Your data never leaves your browser." },
-    { icon: Zap, t: "Blazing fast", d: "Instant generation with zero network roundtrips." },
-    { icon: Lock, t: "Cryptographically secure", d: "Powered by the Web Crypto API — the same standard used by banks." },
-    { icon: Eye, t: "No tracking", d: "No accounts, no cookies, no analytics on your inputs." },
-  ];
-  return (
-    <section className="container mx-auto px-4 py-20 max-w-7xl">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4">Built for trust</h2>
-      </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {items.map(i => (
-          <div key={i.t} className="p-6 rounded-2xl glass border border-border/60">
-            <i.icon className="h-8 w-8 text-accent mb-4" />
-            <h3 className="font-semibold mb-2">{i.t}</h3>
-            <p className="text-sm text-muted-foreground">{i.d}</p>
+    <section className="border-b border-border">
+      <div className="container mx-auto px-6 py-20 max-w-7xl">
+        <div className="flex items-end justify-between mb-12 gap-6 flex-wrap">
+          <div>
+            <div className="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground mb-3">§ 01 — The index</div>
+            <h2 className="font-display text-4xl md:text-6xl tracking-tight">Seven small tools.<br /><span className="italic">Each does one thing.</span></h2>
           </div>
-        ))}
+          <p className="max-w-sm text-sm text-muted-foreground">No dashboards, no sign-in, no upsell. Pick the one you need and close the tab.</p>
+        </div>
+        <ul className="border-t border-border">
+          {TOOLS.map((t, i) => {
+            const Icon = t.icon;
+            return (
+              <li key={t.to} className="border-b border-border">
+                <Link to={t.to} className="group grid grid-cols-12 gap-4 items-baseline py-6 px-1 hover:bg-foreground/[0.03] transition-colors">
+                  <span className="col-span-2 md:col-span-1 font-mono text-xs text-muted-foreground tabular-nums">0{i + 1}</span>
+                  <span className="col-span-10 md:col-span-3 font-display text-2xl md:text-3xl flex items-center gap-3">
+                    <Icon className="h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+                    {t.name}
+                  </span>
+                  <span className="hidden md:block md:col-span-6 text-sm text-muted-foreground">{t.desc}</span>
+                  <span className="col-span-12 md:col-span-2 text-right text-sm inline-flex items-center justify-end gap-1 text-muted-foreground group-hover:text-foreground transition-colors">
+                    Open <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );
 }
 
-function Testimonials() {
-  const reviews = [
-    { q: "Genuinely the best password tool I've used. Fast, beautiful, and zero BS.", a: "Maya R.", r: "Security Engineer" },
-    { q: "I switched from three different tools to just SecureGen. It does everything.", a: "Daniel K.", r: "Developer" },
-    { q: "Love that nothing leaves my browser. Privacy done right.", a: "Priya S.", r: "Product Designer" },
+function Manifesto() {
+  return (
+    <section className="border-b border-border">
+      <div className="container mx-auto px-6 py-24 md:py-32 max-w-7xl">
+        <div className="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground mb-8">§ 02 — A short manifesto</div>
+        <p className="font-display text-3xl md:text-5xl leading-[1.15] max-w-4xl">
+          Most security tools want a sign-up, a sync, a sidebar of upsells. <span className="italic text-muted-foreground">We don't.</span> A password generator should generate a password, then disappear. We removed the parts that were never about you.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function Notes() {
+  const notes = [
+    { n: "01", t: "On entropy", b: "We report bits, not 'strong/weak'. A 12-char random lowercase string sits around 56 bits; add symbols and length and you climb fast. Anything past ~80 bits is fine for human accounts; ~128 for keys." },
+    { n: "02", t: "On the random source", b: "getRandomValues is the platform CSPRNG. Math.random() is not. We never use Math.random for anything that matters, and neither should your password manager." },
+    { n: "03", t: "On storage", b: "There isn't any. The tools have no database, no analytics on inputs, no server-side logging. Open devtools and watch — the network panel stays quiet." },
   ];
   return (
-    <section className="container mx-auto px-4 py-20 max-w-7xl">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4">Loved by professionals</h2>
-      </div>
-      <div className="grid md:grid-cols-3 gap-4">
-        {reviews.map(r => (
-          <Card key={r.a} className="p-6 glass border-border/60">
-            <div className="flex gap-1 mb-3">{[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-accent text-accent" />)}</div>
-            <p className="mb-4 text-foreground">&ldquo;{r.q}&rdquo;</p>
-            <div>
-              <div className="font-semibold text-sm">{r.a}</div>
-              <div className="text-xs text-muted-foreground">{r.r}</div>
-            </div>
-          </Card>
-        ))}
+    <section className="border-b border-border">
+      <div className="container mx-auto px-6 py-20 max-w-7xl">
+        <div className="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground mb-10">§ 03 — Field notes</div>
+        <div className="grid md:grid-cols-3 gap-px bg-border border border-border">
+          {notes.map(n => (
+            <article key={n.n} className="bg-background p-8">
+              <div className="font-mono text-xs text-muted-foreground mb-6">{n.n}</div>
+              <h3 className="font-display text-2xl mb-3">{n.t}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{n.b}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -226,40 +221,47 @@ function Testimonials() {
 
 function FAQ() {
   return (
-    <section className="container mx-auto px-4 py-20 max-w-3xl">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4">Frequently asked</h2>
+    <section className="border-b border-border">
+      <div className="container mx-auto px-6 py-20 max-w-7xl grid lg:grid-cols-12 gap-10">
+        <div className="lg:col-span-4">
+          <div className="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground mb-3">§ 04 — Q&amp;A</div>
+          <h2 className="font-display text-4xl md:text-5xl tracking-tight">Honest answers,<br /><span className="italic">no fine print.</span></h2>
+        </div>
+        <div className="lg:col-span-8">
+          <Accordion type="single" collapsible className="border-t border-border">
+            {FAQS.map((f, i) => (
+              <AccordionItem key={i} value={`item-${i}`} className="border-b border-border">
+                <AccordionTrigger className="py-5 text-left font-display text-xl md:text-2xl hover:no-underline">{f.q}</AccordionTrigger>
+                <AccordionContent className="pb-5 text-muted-foreground text-base leading-relaxed max-w-2xl">{f.a}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
       </div>
-      <Accordion type="single" collapsible className="glass rounded-2xl border border-border/60 p-2">
-        {FAQS.map((f, i) => (
-          <AccordionItem key={i} value={`item-${i}`} className="border-border/40 last:border-0">
-            <AccordionTrigger className="px-4 text-left">{f.q}</AccordionTrigger>
-            <AccordionContent className="px-4 text-muted-foreground">{f.a}</AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
     </section>
   );
 }
 
-function CTA() {
+function Colophon() {
   return (
-    <section className="container mx-auto px-4 py-20 max-w-7xl">
-      <div className="relative overflow-hidden rounded-3xl p-12 md:p-20 text-center text-white" style={{ background: "var(--gradient-hero)" }}>
-        <div className="absolute inset-0 bg-black/10" />
-        <div className="relative">
-          <Shield className="h-12 w-12 mx-auto mb-6 opacity-90" />
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Start securing your digital life</h2>
-          <p className="text-lg opacity-90 max-w-xl mx-auto mb-8">Free forever. No signup. Works offline. Premium-grade security tools, instantly.</p>
-          <Link to="/password-generator">
-            <Button size="lg" className="bg-white text-primary hover:bg-white/90 h-12 px-8 text-base">
-              Generate your first password <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-          <div className="flex flex-wrap justify-center gap-6 mt-8 text-sm opacity-90">
-            <div className="flex items-center gap-2"><Check className="h-4 w-4" /> No account needed</div>
-            <div className="flex items-center gap-2"><Check className="h-4 w-4" /> 100% private</div>
-            <div className="flex items-center gap-2"><Check className="h-4 w-4" /> Works offline</div>
+    <section>
+      <div className="container mx-auto px-6 py-20 max-w-7xl">
+        <div className="grid lg:grid-cols-12 gap-10 items-end">
+          <div className="lg:col-span-8">
+            <div className="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground mb-4">Colophon</div>
+            <h2 className="font-display text-5xl md:text-7xl leading-[0.95] tracking-tight">
+              Set <span className="italic">in Instrument Serif &amp;</span> Inter.<br />
+              Built to outlive the trend cycle.
+            </h2>
+          </div>
+          <div className="lg:col-span-4">
+            <Link to="/password-generator" className="block group">
+              <Button variant="default" className="w-full h-14 rounded-none text-base font-medium inline-flex items-center justify-between px-5">
+                <span>Generate a password</span>
+                <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Button>
+              <p className="mt-3 text-xs font-mono uppercase tracking-[0.18em] text-muted-foreground">No account · Works offline · Free</p>
+            </Link>
           </div>
         </div>
       </div>
