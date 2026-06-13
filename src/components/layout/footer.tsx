@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Shield, Github, Twitter, Mail } from "lucide-react";
+import { Github, Twitter, Mail } from "lucide-react";
 
 export function Footer() {
   return (
@@ -7,11 +7,10 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12 max-w-7xl">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <Shield className="h-6 w-6 text-primary" />
-              <span className="text-lg font-bold gradient-text">SecureGen</span>
+            <Link to="/" className="inline-block mb-4">
+              <span className="font-display text-2xl tracking-tight">SecureGen<span className="text-accent">.</span></span>
             </Link>
-            <p className="text-sm text-muted-foreground max-w-sm">Generate. Secure. Protect. Free professional-grade security tools that run entirely in your browser.</p>
+            <p className="text-sm text-muted-foreground max-w-sm">A small set of browser-only security tools. Generate. Secure. Protect. Nothing leaves the tab.</p>
             <div className="flex gap-3 mt-4">
               <a href="#" aria-label="Twitter" className="text-muted-foreground hover:text-foreground"><Twitter className="h-5 w-5" /></a>
               <a href="#" aria-label="GitHub" className="text-muted-foreground hover:text-foreground"><Github className="h-5 w-5" /></a>
