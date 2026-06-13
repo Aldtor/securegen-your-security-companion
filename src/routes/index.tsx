@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { KeyRound, Gauge, AtSign, Type, Hash, QrCode, Fingerprint, ArrowUpRight, RefreshCw, Copy } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
