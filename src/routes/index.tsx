@@ -65,20 +65,25 @@ function Hero() {
   const copy = () => { navigator.clipboard.writeText(pw); toast.success("Password copied"); };
   return (
     <section className="relative overflow-hidden mesh-bg">
+      <div className="absolute inset-0 grid-bg pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
       <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-primary/20 blur-3xl animate-float" />
       <div className="absolute bottom-0 -right-32 w-96 h-96 rounded-full bg-secondary/20 blur-3xl animate-float" style={{ animationDelay: "2s" }} />
       <div className="container mx-auto px-4 pt-20 pb-24 max-w-7xl relative">
         <div className="text-center max-w-4xl mx-auto animate-fade-up">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-border/60 text-sm text-muted-foreground mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-border/60 text-sm text-muted-foreground mb-6 shadow-[var(--shadow-elegant)]">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+            </span>
             <Sparkles className="h-4 w-4 text-accent" />
             <span>Trusted by 100,000+ users worldwide</span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.1] mb-6">
-            Generate <span className="gradient-text">Strong & Secure</span> Passwords Instantly
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] leading-[1.02] mb-6">
+            Generate. <span className="gradient-text">Secure.</span><br className="hidden md:block" /> Protect.
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            Create secure passwords, check password strength, generate usernames, UUIDs, QR codes, hashes and more with professional-grade security tools.
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+            A premium suite of security and privacy tools — passwords, passphrases, UUIDs, QR codes, hashes and more. 100% browser-based. Zero tracking.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
             <Link to="/password-generator">
