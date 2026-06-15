@@ -8,7 +8,7 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2">
             <Link to="/" className="inline-block mb-4">
-              <span className="font-display text-2xl tracking-tight">SecureGen<span className="text-accent">.</span></span>
+              <span className="font-display font-bold text-2xl tracking-tight">Secure<span className="gradient-text">Gen</span></span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-sm">A small set of browser-only security tools. Generate. Secure. Protect. Nothing leaves the tab.</p>
             <div className="flex gap-3 mt-4">
