@@ -19,11 +19,11 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 w-full glass border-b border-border/40">
+    <header className="sticky top-0 z-50 w-full glass-nav">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 max-w-7xl">
-        <Link to="/" className="flex items-center gap-2 group">
-          <span className="font-display text-2xl tracking-tight">SecureGen<span className="text-accent">.</span></span>
-        </Link>
+          <Link to="/" className="flex items-center gap-2 group">
+            <span className="font-display font-bold text-2xl tracking-tight">Secure<span className="gradient-text">Gen</span></span>
+          </Link>
         <nav className="hidden md:flex items-center gap-1">
           <Link to="/" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Home</Link>
           <div className="relative" onMouseEnter={() => setToolsOpen(true)} onMouseLeave={() => setToolsOpen(false)}>
@@ -47,7 +47,7 @@ export function Header() {
             {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
           <Link to="/password-generator" className="hidden md:inline-flex">
-            <Button className="rounded-none h-9 px-4 text-sm">Generate →</Button>
+            <Button className="rounded-xl h-9 px-4 text-sm shadow-md" style={{ background: "var(--gradient-primary)" }}>Generate →</Button>
           </Link>
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
