@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Type, Copy, RefreshCw } from "lucide-react";
-import { generatePassphrase, calcEntropy, strengthLabel, crackTime } from "@/lib/generators";
+import { generatePassphrase, calcPassphraseEntropy, strengthLabel, crackTime } from "@/lib/generators";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/passphrase-generator")({
@@ -32,7 +32,7 @@ function Page() {
   const [out, setOut] = useState("");
   const regen = () => setOut(generatePassphrase(words, num, sym, sep));
   useEffect(() => { regen(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [words, num, sym, sep]);
-  const entropy = useMemo(() => calcEntropy(out), [out]);
+  const entropy = useMemo(() => calcPassphraseEntropy(words, num, sym), [words, num, sym]);
   const strength = strengthLabel(entropy);
 
   return (
@@ -44,7 +44,7 @@ function Page() {
         </div>
         <div className="font-mono text-lg md:text-2xl break-all p-4 rounded-xl bg-muted/50 border border-border mb-4 select-all">{out}</div>
         <div className="flex flex-wrap gap-2 mb-4 text-xs">
-          <div className="px-3 py-1.5 rounded-lg bg-muted/50 border border-border"><span className="text-muted-foreground">Entropy:</span> <span className="font-semibold">{entropy.toFixed(1)} bits</span></div>
+          <div className="px-3 py-1.5 rounded-lg bg-muted/50 border border-border"><span className="text-muted-foreground">Estimated entropy:</span> <span className="font-semibold">{entropy.toFixed(1)} bits</span></div>
           <div className="px-3 py-1.5 rounded-lg bg-muted/50 border border-border"><span className="text-muted-foreground">Crack time:</span> <span className="font-semibold">{crackTime(entropy)}</span></div>
         </div>
         <div className="flex gap-2">
