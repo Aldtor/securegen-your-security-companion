@@ -6,9 +6,18 @@ const SIMILAR = /[il1Lo0O]/g;
 const AMBIGUOUS = /[{}\[\]()\/\\'"`~,;:.<>]/g;
 
 function randomInt(max: number) {
-  const a = new Uint32Array(1);
-  crypto.getRandomValues(a);
-  return a[0] % max;
+  if (!Number.isSafeInteger(max) || max <= 0 || max > 2 ** 32) {
+    throw new RangeError("max must be an integer between 1 and 2^32");
+  }
+
+  const range = 2 ** 32;
+  const limit = range - (range % max);
+  const value = new Uint32Array(1);
+  do {
+    crypto.getRandomValues(value);
+  } while (value[0] >= limit);
+
+  return value[0] % max;
 }
 
 export interface PasswordOptions {
@@ -94,7 +103,15 @@ export function generateUsername(style: UsernameStyle): string {
 }
 
 // EFF short wordlist (subset of common, easy-to-type words)
-const WORDS = ["apple","brave","cloud","drift","ember","forge","grove","haven","ivory","jolly","koala","lemon","mango","noble","ocean","pearl","quiet","raven","stone","tiger","unity","vivid","whale","xenon","yacht","zebra","amber","blaze","crisp","dawn","echo","frost","glow","harbor","island","jewel","karma","light","music","north","orbit","piano","quest","river","storm","trail","urban","valley","wheat","zenith","alpha","bloom","comet","delta","earth","flame","ghost","honey","ivory","jungle","knight","linen","meadow","nebula","onyx","prism","quartz","rocket","silver","torch","umbra","vista","willow"];
+const WORDS = ["apple","brave","cloud","drift","ember","forge","grove","haven","ivory","jolly","koala","lemon","mango","noble","ocean","pearl","quiet","raven","stone","tiger","unity","vivid","whale","xenon","yacht","zebra","amber","blaze","crisp","dawn","echo","frost","glow","harbor","island","jewel","karma","light","music","north","orbit","piano","quest","river","storm","trail","urban","valley","wheat","zenith","alpha","bloom","comet","delta","earth","flame","ghost","honey","jungle","knight","linen","meadow","nebula","onyx","prism","quartz","rocket","silver","torch","umbra","vista","willow"];
+
+// Entropy from independent word and suffix choices, not output character count.
+export function calcPassphraseEntropy(words: number, addNumber: boolean, addSymbol: boolean): number {
+  let entropy = words * Math.log2(WORDS.length);
+  if (addNumber) entropy += Math.log2(99); // randomInt(99) yields 0–98.
+  if (addSymbol) entropy += Math.log2(SYMBOLS.length);
+  return entropy;
+}
 
 export function generatePassphrase(words: number, addNumber: boolean, addSymbol: boolean, separator = "-"): string {
   const parts: string[] = [];
